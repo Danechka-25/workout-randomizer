@@ -6,637 +6,1166 @@
   <title>Тренировки</title>
   <style>
     :root {
-      --bg0: #07111f;
-      --bg1: #0d1b2a;
-      --panel: rgba(14, 23, 38, 0.82);
-      --panel-strong: rgba(17, 30, 48, 0.95);
+      --bg0: #06111f;
+      --bg1: #0b1728;
+      --panel: rgba(15, 25, 41, 0.84);
+      --panel-strong: rgba(18, 30, 48, 0.96);
       --line: rgba(148, 163, 184, 0.18);
-      --text: #e5eef8;
+      --text: #e8f1fb;
       --muted: #9fb2c7;
       --accent: #60a5fa;
       --accent2: #22c55e;
-      --danger: #ef4444;
+      --accent3: #f59e0b;
       --shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
-      --radius: 22px;
+      --radius: 24px;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+    }
 
     body {
-      margin: 0;
-      min-height: 100vh;
       color: var(--text);
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
       background:
         radial-gradient(circle at top left, rgba(96, 165, 250, 0.18), transparent 28%),
-        radial-gradient(circle at bottom right, rgba(34, 197, 94, 0.16), transparent 30%),
+        radial-gradient(circle at top right, rgba(34, 197, 94, 0.14), transparent 26%),
+        radial-gradient(circle at bottom, rgba(245, 158, 11, 0.10), transparent 28%),
         linear-gradient(180deg, var(--bg0), var(--bg1));
     }
 
     .wrap {
-      max-width: 1200px;
+      max-width: 1180px;
       margin: 0 auto;
       padding: 20px;
     }
 
     .hero {
-      background: linear-gradient(135deg, rgba(17, 30, 48, 0.98), rgba(8, 14, 24, 0.92));
+      background: linear-gradient(135deg, rgba(18, 30, 48, 0.98), rgba(8, 14, 24, 0.92));
       border: 1px solid var(--line);
       box-shadow: var(--shadow);
       border-radius: 30px;
       padding: 24px;
       margin-bottom: 18px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(96, 165, 250, 0.10), transparent 35%, rgba(34, 197, 94, 0.08));
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
     }
 
     h1 {
       margin: 0 0 10px;
-      font-size: clamp(30px, 4vw, 52px);
-      letter-spacing: -0.04em;
+      font-size: clamp(30px, 4vw, 54px);
+      letter-spacing: -0.05em;
+      line-height: 0.98;
     }
 
     .subtitle {
       margin: 0;
-      max-width: 800px;
-      line-height: 1.55;
+      max-width: 850px;
       color: var(--muted);
+      line-height: 1.6;
+      font-size: 16px;
     }
 
-    .days {
+    .controls {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 20px;
+      margin-top: 18px;
     }
 
-    .day-btn {
+    .day-btn, .btn {
       appearance: none;
       border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.04);
       color: var(--text);
-      background: rgba(255, 255, 255, 0.03);
-      padding: 13px 16px;
       border-radius: 999px;
       cursor: pointer;
+      padding: 12px 16px;
       font-weight: 700;
-      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease, color .15s ease;
     }
 
-    .day-btn:hover {
+    .day-btn:hover, .btn:hover {
       transform: translateY(-1px);
       border-color: rgba(96, 165, 250, 0.45);
     }
 
     .day-btn.active {
-      background: linear-gradient(135deg, rgba(96, 165, 250, 0.95), rgba(34, 197, 94, 0.95));
-      color: #04111d;
+      background: linear-gradient(135deg, rgba(96, 165, 250, 0.96), rgba(34, 197, 94, 0.92));
       border-color: transparent;
-    }
-
-    .panel {
-      display: none;
-      background: var(--panel);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-      border-radius: 28px;
-      padding: 18px;
-      margin-bottom: 18px;
-      backdrop-filter: blur(10px);
-    }
-
-    .panel.active {
-      display: block;
-    }
-
-    .panel-head {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 14px;
-      align-items: flex-start;
-      margin-bottom: 14px;
-    }
-
-    .panel h2 {
-      margin: 0;
-      font-size: 24px;
-    }
-
-    .panel p {
-      margin: 6px 0 0;
-      color: var(--muted);
-      line-height: 1.45;
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .btn {
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,0.04);
-      color: var(--text);
-      padding: 12px 15px;
-      border-radius: 14px;
-      cursor: pointer;
-      font-weight: 700;
-      transition: transform .15s ease, background .15s ease, border-color .15s ease;
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-      border-color: rgba(96, 165, 250, 0.45);
+      color: #03111e;
     }
 
     .btn.primary {
-      background: linear-gradient(135deg, rgba(96, 165, 250, 0.95), rgba(34, 197, 94, 0.95));
-      color: #04111d;
+      background: linear-gradient(135deg, rgba(96, 165, 250, 0.96), rgba(34, 197, 94, 0.92));
       border-color: transparent;
+      color: #03111e;
     }
 
-    .btn.danger {
-      border-color: rgba(239, 68, 68, 0.35);
-      color: #fecaca;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1.4fr 1fr 0.75fr 0.28fr;
-      gap: 10px;
-      align-items: start;
-    }
-
-    .grid-head {
-      color: #bfd0e0;
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin: 0 0 8px;
-      padding: 0 4px;
-    }
-
-    .row {
-      margin-bottom: 10px;
-      padding: 12px;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: rgba(255,255,255,0.03);
-    }
-
-    input, textarea {
-      width: 100%;
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      background: rgba(3, 10, 18, 0.55);
-      color: var(--text);
-      border-radius: 14px;
-      padding: 12px 12px;
-      font: inherit;
-      outline: none;
-    }
-
-    input:focus, textarea:focus {
-      border-color: rgba(96, 165, 250, 0.55);
-      box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.12);
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 48px;
-    }
-
-    .hint {
-      margin-top: 12px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .result {
-      margin-top: 16px;
-      border-radius: 24px;
-      border: 1px solid rgba(96, 165, 250, 0.16);
-      background: linear-gradient(180deg, rgba(10, 18, 29, 0.9), rgba(7, 13, 22, 0.95));
-      padding: 18px;
-    }
-
-    .result h3 {
-      margin: 0 0 10px;
-      font-size: 20px;
-    }
-
-    .result ol {
-      margin: 0;
-      padding-left: 22px;
-      line-height: 1.6;
-    }
-
-    .result li + li {
-      margin-top: 10px;
-    }
-
-    .result .meta {
-      color: var(--muted);
-      font-size: 14px;
-      margin-top: 12px;
-    }
-
-    .empty {
-      color: var(--muted);
-      font-style: italic;
-      padding: 8px 2px 0;
-    }
-
-    .small {
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .topline {
+    .meta-line {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
       align-items: center;
-      margin-top: 10px;
+      margin-top: 14px;
     }
 
     .pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 12px;
       border-radius: 999px;
-      background: rgba(96, 165, 250, 0.12);
-      border: 1px solid rgba(96, 165, 250, 0.18);
-      color: #cce6ff;
-      font-size: 14px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.04);
+      color: #dbeafe;
+    }
+
+    .pill.green {
+      background: rgba(34, 197, 94, 0.10);
+      border-color: rgba(34, 197, 94, 0.20);
+      color: #bbf7d0;
+    }
+
+    .pill.blue {
+      background: rgba(96, 165, 250, 0.10);
+      border-color: rgba(96, 165, 250, 0.22);
+      color: #bfdbfe;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.35fr 0.95fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      border-radius: 28px;
+      padding: 18px;
+      backdrop-filter: blur(10px);
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .panel h2 {
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: -0.03em;
+    }
+
+    .panel p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .exercise-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .exercise-card {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      padding: 16px;
+    }
+
+    .exercise-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .exercise-name {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .exercise-sets {
+      flex: 0 0 auto;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.20);
+      color: #fde68a;
+      font-size: 13px;
       font-weight: 700;
     }
 
-    @media (max-width: 860px) {
-      .grid-head { display: none; }
+    .exercise-desc {
+      margin: 0 0 12px;
+      color: #d8e5f2;
+      line-height: 1.55;
+    }
 
-      .grid {
+    .subgrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .box {
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: 18px;
+      background: rgba(3, 10, 18, 0.34);
+      padding: 12px;
+    }
+
+    .box-title {
+      margin: 0 0 8px;
+      color: #bfdbfe;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .box ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .box li + li {
+      margin-top: 6px;
+    }
+
+    .result-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .result {
+      display: grid;
+      gap: 12px;
+    }
+
+    .result-card {
+      border-radius: 22px;
+      border: 1px solid rgba(96, 165, 250, 0.18);
+      background: linear-gradient(180deg, rgba(7, 14, 23, 0.96), rgba(10, 18, 29, 0.98));
+      padding: 16px;
+    }
+
+    .result-card h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .result-card .tag {
+      display: inline-flex;
+      margin-bottom: 10px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(96, 165, 250, 0.12);
+      border: 1px solid rgba(96, 165, 250, 0.20);
+      color: #bfdbfe;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .result-card p {
+      margin: 0 0 10px;
+      color: #d8e5f2;
+      line-height: 1.55;
+    }
+
+    .result-card ul {
+      margin: 0;
+      padding-left: 18px;
+      line-height: 1.55;
+    }
+
+    .result-card li + li {
+      margin-top: 6px;
+    }
+
+    .empty {
+      color: var(--muted);
+      font-style: italic;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    .footer-note {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 960px) {
+      .layout {
         grid-template-columns: 1fr;
-      }
-
-      .row {
-        display: grid;
-        gap: 10px;
       }
     }
 
     @media (max-width: 700px) {
-      .wrap { padding: 12px; }
-      .hero, .panel { padding: 16px; border-radius: 22px; }
-      .actions { width: 100%; }
-      .btn { flex: 1 1 auto; }
+      .wrap {
+        padding: 12px;
+      }
+
+      .hero, .panel {
+        padding: 16px;
+        border-radius: 22px;
+      }
+
+      .subgrid {
+        grid-template-columns: 1fr;
+      }
+
+      .day-btn, .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .controls {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
 <body>
   <div class="wrap">
     <section class="hero">
-      <h1>Тренировки</h1>
-      <p class="subtitle">
-        Выбирай день, вписывай упражнения и аналоги, а кнопка ниже будет собирать случайную тренировку.
-        Все данные сохраняются прямо в браузере.
-      </p>
+      <div class="hero-inner">
+        <h1>Тренировки</h1>
+        <p class="subtitle">
+          Выбирай день кнопкой, смотри базу упражнений и нажимай генерацию, чтобы получить
+          случайную тренировку из основного упражнения или его аналога.
+        </p>
 
-      <div class="days" id="dayButtons">
-        <button class="day-btn active" data-day="back-triceps">Спина + трицепс</button>
-        <button class="day-btn" data-day="legs">Ноги</button>
-        <button class="day-btn" data-day="chest-arms">Грудь + руки</button>
-      </div>
+        <div class="controls" id="dayButtons">
+          <button class="day-btn active" data-day="back-triceps">Спина + трицепс</button>
+          <button class="day-btn" data-day="legs">Ноги</button>
+          <button class="day-btn" data-day="chest-arms">Грудь + руки</button>
+          <button class="btn primary" id="generateBtn">Сгенерировать тренировку</button>
+        </div>
 
-      <div class="topline">
-        <span class="pill" id="activeDayLabel">Активный день: Спина + трицепс</span>
-        <span class="small">Подсказка: в "Аналоги" можно писать через запятую.</span>
+        <div class="meta-line">
+          <span class="pill blue" id="activeDayPill">Активный день: Спина + трицепс</span>
+          <span class="pill green">Щадящие ноги без тяжелых приседаний</span>
+        </div>
       </div>
     </section>
 
-    <section class="panel active" id="panel-back-triceps">
-      <div class="panel-head">
-        <div>
-          <h2>Спина + трицепс</h2>
-          <p>Заполни список упражнений. Потом генератор выберет случайную версию из аналога и соберет тренировку.</p>
+    <div class="layout">
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 id="dayTitle">Спина + трицепс</h2>
+            <p id="dayIntro">База на спину и трицепс с нормальными заменами и пояснениями.</p>
+          </div>
         </div>
-        <div class="actions">
-          <button class="btn" data-add-row="back-triceps">Добавить упражнение</button>
-          <button class="btn primary" data-generate="back-triceps">Сгенерировать тренировку</button>
-        </div>
-      </div>
+        <div class="exercise-list" id="exerciseList"></div>
+      </section>
 
-      <div class="grid-head">
-        <div class="grid" style="grid-template-columns: 1.4fr 1fr 0.75fr 0.28fr;">
-          <div>Упражнение</div>
-          <div>Аналоги</div>
-          <div>Подходы / повторы</div>
-          <div></div>
+      <section class="panel">
+        <div class="result-head">
+          <div>
+            <h2>Сгенерированная тренировка</h2>
+            <p>Здесь появится случайный вариант для текущего дня.</p>
+          </div>
         </div>
-      </div>
-
-      <div id="rows-back-triceps"></div>
-      <div class="result" id="result-back-triceps" hidden></div>
-      <div class="hint">Пример: <b>Тяга верхнего блока</b> / аналоги: <b>подтягивания, тяга резинки</b> / 3x10-12.</div>
-    </section>
-
-    <section class="panel" id="panel-legs">
-      <div class="panel-head">
-        <div>
-          <h2>Ноги</h2>
-          <p>Отдельный день для ног. Можно настроить любой набор упражнений и замен.</p>
+        <div class="result" id="resultBox">
+          <p class="empty">Нажми «Сгенерировать тренировку», и я соберу тебе план на сегодня.</p>
         </div>
-        <div class="actions">
-          <button class="btn" data-add-row="legs">Добавить упражнение</button>
-          <button class="btn primary" data-generate="legs">Сгенерировать тренировку</button>
+        <div class="footer-note">
+          Если позже захочешь, я добавлю сюда фото упражнений, отдельные карточки для аналогов и сохранение истории тренировок.
         </div>
-      </div>
-
-      <div class="grid-head">
-        <div class="grid" style="grid-template-columns: 1.4fr 1fr 0.75fr 0.28fr;">
-          <div>Упражнение</div>
-          <div>Аналоги</div>
-          <div>Подходы / повторы</div>
-          <div></div>
-        </div>
-      </div>
-
-      <div id="rows-legs"></div>
-      <div class="result" id="result-legs" hidden></div>
-      <div class="hint">Пример: <b>Присед</b> / аналоги: <b>жим ногами, гакк-присед</b> / 4x6-10.</div>
-    </section>
-
-    <section class="panel" id="panel-chest-arms">
-      <div class="panel-head">
-        <div>
-          <h2>Грудь + руки</h2>
-          <p>Сюда можно добавить жимы, разводки, бицепс и все твои замены.</p>
-        </div>
-        <div class="actions">
-          <button class="btn" data-add-row="chest-arms">Добавить упражнение</button>
-          <button class="btn primary" data-generate="chest-arms">Сгенерировать тренировку</button>
-        </div>
-      </div>
-
-      <div class="grid-head">
-        <div class="grid" style="grid-template-columns: 1.4fr 1fr 0.75fr 0.28fr;">
-          <div>Упражнение</div>
-          <div>Аналоги</div>
-          <div>Подходы / повторы</div>
-          <div></div>
-        </div>
-      </div>
-
-      <div id="rows-chest-arms"></div>
-      <div class="result" id="result-chest-arms" hidden></div>
-      <div class="hint">Пример: <b>Жим штанги лежа</b> / аналоги: <b>жим гантелей, жим в тренажере</b> / 4x6-10.</div>
-    </section>
+      </section>
+    </div>
   </div>
 
   <script>
-    const STORAGE_KEY = "workout-randomizer-v1";
-
-    const dayNames = {
-      "back-triceps": "Спина + трицепс",
-      "legs": "Ноги",
-      "chest-arms": "Грудь + руки",
-    };
-
-    const defaults = {
-      activeDay: "back-triceps",
-      days: {
-        "back-triceps": [
-          { exercise: "Тяга верхнего блока", alternatives: "Подтягивания, тяга резинки", sets: "3 x 10-12" },
-          { exercise: "Тяга штанги в наклоне", alternatives: "Тяга гантели, тяга Т-грифа", sets: "4 x 8-10" },
-          { exercise: "Французский жим", alternatives: "Разгибание на блоке, отжимания на брусьях", sets: "3 x 10-12" }
-        ],
-        "legs": [
-          { exercise: "Присед со штангой", alternatives: "Жим ногами, гакк-присед", sets: "4 x 6-10" },
-          { exercise: "Сгибание ног лежа", alternatives: "Сгибание ног сидя", sets: "3 x 10-12" },
-          { exercise: "Выпады", alternatives: "Болгарские выпады, шаги на платформу", sets: "3 x 10-12" }
-        ],
-        "chest-arms": [
-          { exercise: "Жим штанги лежа", alternatives: "Жим гантелей, жим в тренажере", sets: "4 x 6-10" },
-          { exercise: "Разводка гантелей", alternatives: "Сведения в кроссовере, pec deck", sets: "3 x 10-12" },
-          { exercise: "Сгибание на бицепс", alternatives: "Молотки, скамья Скотта", sets: "3 x 10-12" }
+    const workoutData = {
+      "back-triceps": {
+        title: "Спина + трицепс",
+        intro: "Тяги для спины и движения на трицепс. Варианты подобраны так, чтобы можно было менять упражнения, не теряя смысл тренировки.",
+        blocks: [
+          {
+            name: "Тяга верхнего блока к груди",
+            sets: "3 x 10-12",
+            description: "Сядь, зафиксируй бедра и тяни рукоять к верхней части груди, сводя лопатки и ведя локти вниз.",
+            tips: [
+              "Не раскачивай корпус",
+              "Не тяни только руками",
+              "Внизу делай короткую паузу"
+            ],
+            alternatives: [
+              {
+                name: "Подтягивания",
+                description: "Более тяжелый вариант с собственным весом, работает похоже на верхний блок.",
+                tips: [
+                  "Начинай движение лопатками",
+                  "Не проваливай плечи",
+                  "Если тяжело - используй резину или гравитрон"
+                ]
+              },
+              {
+                name: "Тяга верхнего блока узким хватом",
+                description: "Чуть более узкая траектория и другой акцент на широчайшие мышцы.",
+                tips: [
+                  "Локти веди ближе к корпусу",
+                  "Не заваливайся назад",
+                  "Держи контроль в верхней точке"
+                ]
+              },
+              {
+                name: "Тяга резинки сверху",
+                description: "Домашний и щадящий вариант с похожей механикой движения.",
+                tips: [
+                  "Делай движение медленно",
+                  "Фиксируй корпус",
+                  "Сжимай спину в нижней точке"
+                ]
+              }
+            ]
+          },
+          {
+            name: "Тяга горизонтального блока",
+            sets: "4 x 8-10",
+            description: "Тяни рукоять к животу, своди лопатки и не заваливай корпус назад.",
+            tips: [
+              "Плечи не поднимай к ушам",
+              "В пик-сокращении задержись на секунду",
+              "Опускание делай под контролем"
+            ],
+            alternatives: [
+              {
+                name: "Тяга в тренажере сидя",
+                description: "Стабильный вариант с более простой техникой.",
+                tips: [
+                  "Сначала своди лопатки",
+                  "Не округляй спину",
+                  "Не делай рывок из нижней точки"
+                ]
+              },
+              {
+                name: "Тяга гантели к поясу",
+                description: "Свободная траектория, помогает лучше чувствовать спину.",
+                tips: [
+                  "Держи корпус устойчиво",
+                  "Не крутись за весом",
+                  "Тяни локтем, а не кистью"
+                ]
+              },
+              {
+                name: "Тяга к поясу в кроссовере",
+                description: "Плавное натяжение и хороший контроль по всей амплитуде.",
+                tips: [
+                  "Не рви старт",
+                  "Сохраняй ровную спину",
+                  "Своди лопатки в конце"
+                ]
+              }
+            ]
+          },
+          {
+            name: "Тяга штанги в наклоне",
+            sets: "3 x 8-10",
+            description: "Наклони корпус, держи спину ровной и тяни штангу к нижней части живота.",
+            tips: [
+              "Поясницу не округляй",
+              "Вес не дергай",
+              "Корпус держи жестко"
+            ],
+            alternatives: [
+              {
+                name: "Тяга Т-грифа",
+                description: "Похожа по нагрузке, часто проще контролировать траекторию.",
+                tips: [
+                  "Не заваливай корпус",
+                  "Тяни локтями назад",
+                  "Не сокращай амплитуду"
+                ]
+              },
+              {
+                name: "Тяга в тренажере с упором грудью",
+                description: "Хороший вариант, если нужно снизить нагрузку на поясницу.",
+                tips: [
+                  "Грудь прижата к опоре",
+                  "Лопатки веди назад и вниз",
+                  "Не ускоряй негативную фазу"
+                ]
+              },
+              {
+                name: "Инвертированные подтягивания",
+                description: "Вариант с собственным весом, полезен для техники и контроля спины.",
+                tips: [
+                  "Корпус держи прямым",
+                  "Тяни грудь к опоре",
+                  "Не провисай внизу"
+                ]
+              }
+            ]
+          },
+          {
+            name: "Разгибание рук на верхнем блоке",
+            sets: "3 x 10-12",
+            description: "Прижми локти к корпусу и разгибай руки вниз до полного сокращения трицепса.",
+            tips: [
+              "Не подключай корпус",
+              "Локти держи на месте",
+              "Внизу делай паузу"
+            ],
+            alternatives: [
+              {
+                name: "Разгибание с веревкой",
+                description: "Самый удобный и частый вариант для мягкой нагрузки на трицепс.",
+                tips: [
+                  "Разводи веревку внизу",
+                  "Не бросай вес вверх",
+                  "Держи локти узко"
+                ]
+              },
+              {
+                name: "Разгибание одной рукой на блоке",
+                description: "Помогает лучше прочувствовать каждую руку отдельно.",
+                tips: [
+                  "Не разворачивай корпус",
+                  "Фиксируй локоть",
+                  "Делай движение плавно"
+                ]
+              },
+              {
+                name: "Отжимания узким хватом",
+                description: "Простой вариант без тренажера, если нужен более базовый паттерн.",
+                tips: [
+                  "Локти не разводи слишком широко",
+                  "Корпус держи ровно",
+                  "Работай без провала в пояснице"
+                ]
+              }
+            ]
+          },
+          {
+            name: "Французский жим лежа",
+            sets: "3 x 10-12",
+            description: "Опускай гриф к области лба или чуть за голову, затем разгибай руки за счет локтей.",
+            tips: [
+              "Локти не разводить в стороны",
+              "Не опускай слишком резко",
+              "Если локти чувствительные, уменьши вес"
+            ],
+            alternatives: [
+              {
+                name: "Разгибание гантели из-за головы",
+                description: "Удобный вариант с хорошей амплитудой на длинную головку трицепса.",
+                tips: [
+                  "Локти держи узко",
+                  "Опускай под контролем",
+                  "Не прогибай поясницу"
+                ]
+              },
+              {
+                name: "Жим узким хватом",
+                description: "Более базовый многосуставной вариант для трицепса.",
+                tips: [
+                  "Локти ближе к корпусу",
+                  "Штангу опускай под контролем",
+                  "Не отбивай от груди"
+                ]
+              },
+              {
+                name: "Отжимания на брусьях",
+                description: "Сильный базовый вариант, если плечи и локти его хорошо переносят.",
+                tips: [
+                  "Не проваливай плечи",
+                  "Опускайся комфортно",
+                  "Если тяжело - работай с ассистом"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "legs": {
+        title: "Ноги",
+        intro: "Щадящий день ног для коленей: упор на ягодицы, заднюю поверхность бедра и икры без тяжелых приседаний.",
+        blocks: [
+          {
+            name: "Ягодичный мост / хип-траст",
+            sets: "4 x 10-12",
+            description: "Поднимай таз за счет ягодиц, вверху делай короткую паузу и не перегибай поясницу.",
+            tips: [
+              "Толкайся пятками",
+              "Поясницу не ломай",
+              "Внизу сохраняй контроль"
+            ],
+            alternatives: [
+              {
+                name: "Хип-траст в тренажере",
+                description: "Более стабильный вариант, если есть такой тренажер в зале.",
+                tips: [
+                  "Фиксируй корпус",
+                  "Сжимай ягодицы вверху",
+                  "Не делай рывок"
+                ]
+              },
+              {
+                name: "Ягодичный мост с гантелью",
+                description: "Простой и мягкий вариант для домашней или легкой тренировки.",
+                tips: [
+                  "Держи стопы устойчиво",
+                  "Не отрывай поясницу",
+                  "Поднимай таз плавно"
+                ]
+              },
+              {
+                name: "Отведение ноги назад в кроссовере",
+                description: "Изоляция ягодицы без сильной нагрузки на колени.",
+                tips: [
+                  "Не раскачивай корпус",
+                  "Делай амплитуду медленно",
+                  "Сжимай ягодицу в конце"
+                ]
+              }
+            ]
+          },
+          {
+            name: "Румынская тяга с гантелями",
+            sets: "3 x 8-10",
+            description: "Уводи таз назад, держи спину ровной и опускай вес до растяжения задней поверхности бедра.",
+            tips: [
+              "Колени чуть согнуты",
+              "Спина нейтральная",
+              "Не гонись за большим весом"
+            ],
+            alternatives: [
+              {
+                name: "Румынская тяга со штангой",
+                description: "Похожая механика, но обычно чуть более требовательна к технике.",
+                tips: [
+                  "Штанга близко к ногам",
+                  "Не округляй спину",
+                  "Двигайся через таз"
+                ]
+              },
+              {
+                name: "Тяга гантелей на одной ноге",
+                description: "Хороший контролируемый вариант для задней поверхности бедра и баланса.",
+                tips: [
+                  "Держи таз ровно",
+                  "Не проворачивайся",
+                  "Работай без боли в колене"
+                ]
+              },
+              {
+                name: "Good morning с легким весом",
+                description: "Только если техника уже уверенная и вес очень умеренный.",
+                tips: [
+                  "Спина жесткая",
+                  "Таз уходит назад",
+                  "Работа без рывка"
+                ]
+              }
+            ]
+          },
+          {
+            name: "Сгибание ног лежа",
+            sets: "3 x 10-12",
+            description: "Сгибай ноги плавно, без рывков, и медленно опускай в исходное положение.",
+            tips: [
+              "Таз не отрывай",
+              "Не бросай вес вниз",
+              "Негатив делай медленно"
+            ],
+            alternatives: [
+              {
+                name: "Сгибание ног сидя",
+                description: "Похожий щадящий вариант на заднюю поверхность бедра.",
+                tips: [
+                  "Сиденье отрегулируй под себя",
+                  "Не рви движение",
+                  "В верхней точке сожми бедро"
+                ]
+              },
+              {
+                name: "Сгибание ног по одной ноге",
+                description: "Помогает лучше контролировать амплитуду и нагрузку.",
+                tips: [
+                  "Не торопись",
+                  "Не компенсируй корпусом",
+                  "Сохраняй одинаковую технику на обеих ногах"
+                ]
+              },
+              {
+                name: "Сгибание ног в кроссовере",
+                description: "Альтернатива без классического станка, если нужно мягко нагрузить бицепс бедра.",
+                tips: [
+                  "Делай движение контролируемо",
+                  "Не выдергивай ногу",
+                  "Сохраняй напряжение весь повтор"
+                ]
+              }
+            ]
+          },
+          {
+            name: "Гиперэкстензия",
+            sets: "3 x 12-15",
+            description: "Поднимай корпус до прямой линии, без переразгибания в пояснице.",
+            tips: [
+              "Акцент на ягодицы и заднюю поверхность бедра",
+              "Движение спокойное",
+              "Не переразгибайся наверху"
+            ],
+            alternatives: [
+              {
+                name: "Гиперэкстензия без веса",
+                description: "Самый мягкий вариант, который легко держать под контролем.",
+                tips: [
+                  "Медленный темп",
+                  "Не спеши",
+                  "Работай в комфортной амплитуде"
+                ]
+              },
+              {
+                name: "Гиперэкстензия с блином у груди",
+                description: "Если хочешь чуть усилить нагрузку, но без сильного давления на колени.",
+                tips: [
+                  "Не бери большой вес",
+                  "Держи корпус собранным",
+                  "Движение без рывка"
+                ]
+              },
+              {
+                name: "Обратная гиперэкстензия",
+                description: "Если есть тренажер, это очень хороший вариант на заднюю цепь.",
+                tips: [
+                  "Амплитуда умеренная",
+                  "Не раскачивайся",
+                  "Работай плавно"
+                ]
+              }
+            ]
+          },
+          {
+            name: "Отведение ноги назад",
+            sets: "3 x 12-15",
+            description: "Отводи ногу назад спокойно, без махов, концентрируясь на ягодице рабочей ноги.",
+            tips: [
+              "Корпус не двигается",
+              "Не делай рывок",
+              "Чувствуй ягодицу в конце движения"
+            ],
+            alternatives: [
+              {
+                name: "Отведение ноги назад в тренажере",
+                description: "Стабильный и мягкий вариант с простой техникой.",
+                tips: [
+                  "Не включай поясницу",
+                  "Сохраняй темп",
+                  "Не сокращай амплитуду"
+                ]
+              },
+              {
+                name: "Отведение ноги в кроссовере",
+                description: "Хорошая изоляция ягодицы без серьезной нагрузки на колено.",
+                tips: [
+                  "Не заваливай корпус",
+                  "Делай движение медленно",
+                  "Фиксируй таз"
+                ]
+              },
+              {
+                name: "Махи назад с резинкой",
+                description: "Домашний или разминочный вариант для активации ягодиц.",
+                tips: [
+                  "Без резких движений",
+                  "Контроль в верхней точке",
+                  "Работай в удобной амплитуде"
+                ]
+              }
+            ]
+          },
+          {
+            name: "Подъем на носки",
+            sets: "4 x 12-15",
+            description: "Поднимайся на носки до полного сокращения икр и медленно опускайся вниз.",
+            tips: [
+              "Пауза вверху полезна",
+              "Амплитуда важнее веса",
+              "Не пружинь"
+            ],
+            alternatives: [
+              {
+                name: "Подъем на носки сидя",
+                description: "Сильнее смещает акцент на камбаловидную мышцу.",
+                tips: [
+                  "Делай полный ход",
+                  "Не спеши",
+                  "Сохраняй контроль"
+                ]
+              },
+              {
+                name: "Подъемы на одной ноге",
+                description: "Простой способ усилить нагрузку без большого веса.",
+                tips: [
+                  "Держись за опору при необходимости",
+                  "Не теряй равновесие",
+                  "Полная амплитуда"
+                ]
+              },
+              {
+                name: "Подъемы в тренажере для икр",
+                description: "Стабильный и удобный вариант, если есть такой тренажер в зале.",
+                tips: [
+                  "Не делай рывок",
+                  "Пауза внизу и наверху",
+                  "Контролируй опускание"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "chest-arms": {
+        title: "Грудь + руки",
+        intro: "День на грудь, бицепс и трицепс. Варианты подобраны так, чтобы можно было менять упражнение, но сохранять смысл тренировки.",
+        blocks: [
+          {
+            name: "Жим штанги лежа",
+            sets: "4 x 6-10",
+            description: "Ляг на скамью, зафиксируй ноги и опускай штангу к нижней части груди без отбива.",
+            tips: [
+              "Лопатки сведены",
+              "Запястья ровные",
+              "Опускание под контролем"
+            ],
+            alternatives: [
+              {
+                name: "Жим гантелей лежа",
+                description: "Больше свободы движения и чуть большая амплитуда.",
+                tips: [
+                  "Не разводи локти слишком широко",
+                  "Не проваливай плечи",
+                  "Выжимай равномерно обе руки"
+                ]
+              },
+              {
+                name: "Жим в тренажере",
+                description: "Стабильный и понятный вариант, если хочется меньше думать о траектории.",
+                tips: [
+                  "Сядь плотно к спинке",
+                  "Не бросай вес",
+                  "Вверху не блокируй локти"
+                ]
+              },
+              {
+                name: "Жим в Смите",
+                description: "Фиксированная траектория, удобно для контроля техники и темпа.",
+                tips: [
+                  "Следи за положением плеч",
+                  "Не отбивай штангу",
+                  "Движение плавное"
+                ]
+              }
+            ]
+          },
+          {
+            name: "Жим гантелей на наклонной скамье",
+            sets: "3 x 8-10",
+            description: "Умеренный наклон, плавное опускание и выжимание вверх по естественной дуге.",
+            tips: [
+              "Локти не разводить слишком широко",
+              "Плечи не выводить вперед",
+              "Не делать слишком крутой угол"
+            ],
+            alternatives: [
+              {
+                name: "Жим штанги на наклонной скамье",
+                description: "Тот же смысл, но со штангой и более фиксированной траекторией.",
+                tips: [
+                  "Контролируй низ",
+                  "Не роняй вес",
+                  "Лопатки держи собранными"
+                ]
+              },
+              {
+                name: "Жим в тренажере на верх грудных",
+                description: "Удобный вариант, если хочешь стабильность и простую механику.",
+                tips: [
+                  "Плавный старт",
+                  "Без рывка",
+                  "Не сокращай амплитуду"
+                ]
+              },
+              {
+                name: "Сведение рук в кроссовере снизу вверх",
+                description: "Более изолированный вариант, хорошо добирает верх груди.",
+                tips: [
+                  "Руки слегка согнуты",
+                  "Сохраняй натяжение",
+                  "Не спеши"
+                ]
+              }
+            ]
+          },
+          {
+            name: "Разводка гантелей лежа",
+            sets: "3 x 10-12",
+            description: "Слегка согнутые руки разводи в стороны и своди над грудью без сильного провала в плечах.",
+            tips: [
+              "Движение плавное",
+              "Не опускай слишком глубоко",
+              "Чувствуй растяжение груди"
+            ],
+            alternatives: [
+              {
+                name: "Сведения в кроссовере",
+                description: "Очень удобный вариант с постоянным натяжением по амплитуде.",
+                tips: [
+                  "Своди руки перед собой",
+                  "Не сутуль плечи",
+                  "Не бросай руки назад"
+                ]
+              },
+              {
+                name: "Pec deck / бабочка",
+                description: "Тренажерный вариант с понятной траекторией и хорошим ощущением груди.",
+                tips: [
+                  "Сядь удобно",
+                  "Локти держи мягкими",
+                  "В конце сожми грудь"
+                ]
+              },
+              {
+                name: "Разводка в тренажере",
+                description: "Похожий изолирующий вариант, если в зале есть подходящий тренажер.",
+                tips: [
+                  "Не ускоряйся",
+                  "Работай в комфортной амплитуде",
+                  "Не зажимай плечи"
+                ]
+              }
+            ]
+          },
+          {
+            name: "Сгибание рук со штангой на бицепс",
+            sets: "3 x 10-12",
+            description: "Поднимай штангу за счет бицепса, без раскачки корпуса и с контролем на опускании.",
+            tips: [
+              "Локти не уводи вперед",
+              "Не помогай спиной",
+              "Опускай медленно"
+            ],
+            alternatives: [
+              {
+                name: "Сгибание рук с гантелями",
+                description: "Более свободная траектория, удобно для контроля каждой руки.",
+                tips: [
+                  "Не разворачивай корпус",
+                  "Делай одинаково обеими руками",
+                  "Не бросай гантели вниз"
+                ]
+              },
+              {
+                name: "Молотки",
+                description: "Нейтральный хват, хороший вариант для бицепса и предплечий.",
+                tips: [
+                  "Локти ближе к телу",
+                  "Корпус стабилен",
+                  "Без рывка"
+                ]
+              },
+              {
+                name: "Сгибание на нижнем блоке",
+                description: "Постоянное натяжение, удобно для контроля темпа и техники.",
+                tips: [
+                  "Не раскачивайся",
+                  "Сохраняй напряжение",
+                  "Вверху не теряй контроль"
+                ]
+              }
+            ]
+          },
+          {
+            name: "Молотки",
+            sets: "3 x 10-12",
+            description: "Поднимай гантели нейтральным хватом, без разворота кистей и без помощи корпусом.",
+            tips: [
+              "Держи локти рядом",
+              "Не делай мах",
+              "Контролируй верхнюю точку"
+            ],
+            alternatives: [
+              {
+                name: "Сгибание с канатом на блоке",
+                description: "Хорошая альтернатива с похожим акцентом и постоянным натяжением.",
+                tips: [
+                  "Не тянь корпусом",
+                  "Своди канат вверху",
+                  "Работай спокойно"
+                ]
+              },
+              {
+                name: "Сгибание на скамье Скотта",
+                description: "Изолированный вариант, который хорошо убирает читинг.",
+                tips: [
+                  "Плечи не поднимай",
+                  "Не опускай резко",
+                  "Фиксируй локти"
+                ]
+              },
+              {
+                name: "Подъем EZ-штанги узким хватом",
+                description: "Чуть другой хват, но близкий смысл для бицепса и предплечий.",
+                tips: [
+                  "Спина неподвижна",
+                  "Не включай поясницу",
+                  "Темп ровный"
+                ]
+              }
+            ]
+          },
+          {
+            name: "Разгибание рук на верхнем блоке",
+            sets: "3 x 10-12",
+            description: "Прижми локти к корпусу и разгибай руки вниз до полного сокращения трицепса.",
+            tips: [
+              "Не подключай корпус",
+              "Локти на месте",
+              "Внизу делай паузу"
+            ],
+            alternatives: [
+              {
+                name: "Разгибание с веревкой",
+                description: "Самый универсальный вариант на трицепс с удобной траекторией.",
+                tips: [
+                  "Разводи веревку внизу",
+                  "Не бросай вес вверх",
+                  "Держи локти узко"
+                ]
+              },
+              {
+                name: "Жим узким хватом",
+                description: "Более базовый вариант, если хочется многосуставного движения.",
+                tips: [
+                  "Локти ближе к корпусу",
+                  "Опускай под контролем",
+                  "Не отбивай штангу"
+                ]
+              },
+              {
+                name: "Отжимания узким хватом",
+                description: "Простой вариант без оборудования, если нужен запасной план.",
+                tips: [
+                  "Корпус ровный",
+                  "Локти не разводи",
+                  "Не проваливай поясницу"
+                ]
+              }
+            ]
+          },
+          {
+            name: "Французский жим гантели из-за головы",
+            sets: "3 x 10-12",
+            description: "Опускай гантель за голову и разгибай руки вверх, сохраняя локти узко.",
+            tips: [
+              "Не разводи локти",
+              "Не работай через боль",
+              "Делай движение спокойно"
+            ],
+            alternatives: [
+              {
+                name: "Французский жим лежа",
+                description: "Классическая версия на трицепс с похожим смыслом.",
+                tips: [
+                  "Локти не убегают в стороны",
+                  "Контролируй опускание",
+                  "Не берись за слишком большой вес"
+                ]
+              },
+              {
+                name: "Разгибание с канатом из-за головы",
+                description: "Хорошая альтернатива, если хочется более мягкой траектории.",
+                tips: [
+                  "Фиксируй корпус",
+                  "Без рывка",
+                  "Локти держи близко"
+                ]
+              },
+              {
+                name: "Жим узким хватом в Смите",
+                description: "Стабильный вариант, если локти лучше чувствуют фиксированную траекторию.",
+                tips: [
+                  "Плавный темп",
+                  "Не блокируй локти резко",
+                  "Корпус собран"
+                ]
+              }
+            ]
+          }
         ]
       }
     };
 
-    const state = loadState();
-
-    const dayButtons = document.getElementById("dayButtons");
-    const activeDayLabel = document.getElementById("activeDayLabel");
-
-    const panels = {
-      "back-triceps": document.getElementById("panel-back-triceps"),
-      "legs": document.getElementById("panel-legs"),
-      "chest-arms": document.getElementById("panel-chest-arms"),
+    const state = {
+      activeDay: loadActiveDay()
     };
 
-    const rowsContainers = {
-      "back-triceps": document.getElementById("rows-back-triceps"),
-      "legs": document.getElementById("rows-legs"),
-      "chest-arms": document.getElementById("rows-chest-arms"),
-    };
+    const dayButtons = [...document.querySelectorAll("[data-day]")];
+    const activeDayPill = document.getElementById("activeDayPill");
+    const dayTitle = document.getElementById("dayTitle");
+    const dayIntro = document.getElementById("dayIntro");
+    const exerciseList = document.getElementById("exerciseList");
+    const resultBox = document.getElementById("resultBox");
+    const generateBtn = document.getElementById("generateBtn");
 
-    const results = {
-      "back-triceps": document.getElementById("result-back-triceps"),
-      "legs": document.getElementById("result-legs"),
-      "chest-arms": document.getElementById("result-chest-arms"),
-    };
-
-    function loadState() {
+    function loadActiveDay() {
       try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return structuredClone(defaults);
-
-        const parsed = JSON.parse(raw);
-        const merged = structuredClone(defaults);
-
-        if (parsed.activeDay && dayNames[parsed.activeDay]) {
-          merged.activeDay = parsed.activeDay;
-        }
-
-        if (parsed.days && typeof parsed.days === "object") {
-          for (const key of Object.keys(merged.days)) {
-            if (Array.isArray(parsed.days[key])) {
-              merged.days[key] = parsed.days[key].map(normalizeRow).filter(Boolean);
-            }
-          }
-        }
-
-        return merged;
+        const saved = localStorage.getItem("workout-active-day");
+        return saved && workoutData[saved] ? saved : "back-triceps";
       } catch {
-        return structuredClone(defaults);
+        return "back-triceps";
       }
     }
 
-    function saveState() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    }
-
-    function normalizeRow(row) {
-      if (!row || typeof row !== "object") return null;
-      return {
-        exercise: String(row.exercise ?? "").trim(),
-        alternatives: String(row.alternatives ?? "").trim(),
-        sets: String(row.sets ?? "").trim(),
-      };
-    }
-
-    function setActiveDay(day) {
-      if (!dayNames[day]) return;
-      state.activeDay = day;
-      saveState();
-
-      [...dayButtons.querySelectorAll(".day-btn")].forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.day === day);
-      });
-
-      Object.entries(panels).forEach(([key, panel]) => {
-        panel.classList.toggle("active", key === day);
-      });
-
-      activeDayLabel.textContent = "Активный день: " + dayNames[day];
-      results[day].hidden = true;
-      renderDay(day);
-    }
-
-    function createRow(day, index, row = {}) {
-      const wrap = document.createElement("div");
-      wrap.className = "row";
-      wrap.dataset.day = day;
-      wrap.dataset.index = index;
-
-      wrap.innerHTML = `
-        <div class="grid" style="grid-template-columns: 1.4fr 1fr 0.75fr 0.28fr;">
-          <input type="text" data-field="exercise" placeholder="Название упражнения" value="${escapeHtml(row.exercise || "")}">
-          <textarea data-field="alternatives" placeholder="Аналоги через запятую">${escapeHtml(row.alternatives || "")}</textarea>
-          <input type="text" data-field="sets" placeholder="Например: 4 x 8-10" value="${escapeHtml(row.sets || "")}">
-          <button class="btn danger" data-remove-row>×</button>
-        </div>
-      `;
-
-      wrap.querySelectorAll("input, textarea").forEach(el => {
-        el.addEventListener("input", () => {
-          const currentIndex = Number(wrap.dataset.index);
-          const currentDay = wrap.dataset.day;
-          const rowData = getRowData(wrap);
-          state.days[currentDay][currentIndex] = rowData;
-          saveState();
-        });
-      });
-
-      wrap.querySelector("[data-remove-row]").addEventListener("click", () => {
-        const currentDay = wrap.dataset.day;
-        const currentIndex = Number(wrap.dataset.index);
-        state.days[currentDay].splice(currentIndex, 1);
-        saveState();
-        renderDay(currentDay);
-      });
-
-      return wrap;
-    }
-
-    function getRowData(rowEl) {
-      const exercise = rowEl.querySelector('[data-field="exercise"]').value.trim();
-      const alternatives = rowEl.querySelector('[data-field="alternatives"]').value.trim();
-      const sets = rowEl.querySelector('[data-field="sets"]').value.trim();
-      return { exercise, alternatives, sets };
-    }
-
-    function renderDay(day) {
-      const container = rowsContainers[day];
-      container.innerHTML = "";
-
-      const rows = state.days[day];
-      if (!rows.length) {
-        const empty = document.createElement("div");
-        empty.className = "empty";
-        empty.textContent = "Пока нет упражнений. Нажми «Добавить упражнение».";
-        container.appendChild(empty);
-        return;
-      }
-
-      rows.forEach((row, index) => {
-        container.appendChild(createRow(day, index, row));
-      });
-    }
-
-    function addRow(day) {
-      state.days[day].push({ exercise: "", alternatives: "", sets: "" });
-      saveState();
-      renderDay(day);
-    }
-
-    function randomChoice(list, usedSet) {
-      const unique = [...new Set(list.map(x => x.trim()).filter(Boolean))];
-      if (!unique.length) return "";
-      for (let i = 0; i < 10; i++) {
-        const candidate = unique[Math.floor(Math.random() * unique.length)];
-        if (!usedSet.has(candidate) || unique.length === 1) {
-          usedSet.add(candidate);
-          return candidate;
-        }
-      }
-      const fallback = unique[Math.floor(Math.random() * unique.length)];
-      usedSet.add(fallback);
-      return fallback;
-    }
-
-    function parseAlternatives(text) {
-      return String(text || "")
-        .split(",")
-        .map(s => s.trim())
-        .filter(Boolean);
-    }
-
-    function shuffle(array) {
-      const copy = [...array];
-      for (let i = copy.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [copy[i], copy[j]] = [copy[j], copy[i]];
-      }
-      return copy;
-    }
-
-    function generateWorkout(day) {
-      const rows = state.days[day]
-        .map(normalizeRow)
-        .filter(row => row && (row.exercise || row.alternatives || row.sets));
-
-      if (!rows.length) {
-        showResult(day, "<p class='empty'>Сначала добавь хотя бы одно упражнение.</p>");
-        return;
-      }
-
-      const used = new Set();
-      const selected = rows.map(row => {
-        const pool = [row.exercise, ...parseAlternatives(row.alternatives)];
-        const chosen = randomChoice(pool, used);
-        return {
-          name: chosen || row.exercise || "Упражнение",
-          sets: row.sets || "—"
-        };
-      });
-
-      const ordered = shuffle(selected);
-
-      const html = `
-        <h3>Тренировка: ${dayNames[day]}</h3>
-        <ol>
-          ${ordered.map(item => `<li><b>${escapeHtml(item.name)}</b><br><span class="small">${escapeHtml(item.sets)}</span></li>`).join("")}
-        </ol>
-        <div class="meta">Сгенерировано случайно из твоих упражнений и аналогов.</div>
-      `;
-
-      showResult(day, html);
-    }
-
-    function showResult(day, html) {
-      const box = results[day];
-      box.innerHTML = html;
-      box.hidden = false;
+    function saveActiveDay(day) {
+      try {
+        localStorage.setItem("workout-active-day", day);
+      } catch {}
     }
 
     function escapeHtml(value) {
@@ -648,37 +1177,112 @@
         .replaceAll("'", "&#039;");
     }
 
-    dayButtons.addEventListener("click", (event) => {
-      const btn = event.target.closest(".day-btn");
-      if (!btn) return;
-      setActiveDay(btn.dataset.day);
-    });
+    function renderDay(dayKey) {
+      const day = workoutData[dayKey];
+      if (!day) return;
 
-    document.addEventListener("click", (event) => {
-      const addBtn = event.target.closest("[data-add-row]");
-      if (addBtn) {
-        addRow(addBtn.dataset.addRow);
-        return;
-      }
+      state.activeDay = dayKey;
+      saveActiveDay(dayKey);
 
-      const generateBtn = event.target.closest("[data-generate]");
-      if (generateBtn) {
-        generateWorkout(generateBtn.dataset.generate);
-      }
-    });
+      dayButtons.forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.day === dayKey);
+      });
 
-    for (const day of Object.keys(state.days)) {
-      if (!Array.isArray(state.days[day])) {
-        state.days[day] = [];
-      }
-      if (!state.days[day].length) {
-        state.days[day] = structuredClone(defaults.days[day]);
-      }
+      activeDayPill.textContent = "Активный день: " + day.title;
+      dayTitle.textContent = day.title;
+      dayIntro.textContent = day.intro;
+
+      exerciseList.innerHTML = day.blocks.map((block, index) => {
+        const alternativesHtml = block.alternatives.map((alt) => `
+          <li>
+            <strong>${escapeHtml(alt.name)}</strong> — ${escapeHtml(alt.description)}
+            <div style="color: var(--muted); margin-top: 4px;">
+              Подсказки: ${escapeHtml(alt.tips.join("; "))}
+            </div>
+          </li>
+        `).join("");
+
+        return `
+          <article class="exercise-card">
+            <div class="exercise-top">
+              <h3 class="exercise-name">${index + 1}. ${escapeHtml(block.name)}</h3>
+              <span class="exercise-sets">${escapeHtml(block.sets)}</span>
+            </div>
+
+            <p class="exercise-desc">${escapeHtml(block.description)}</p>
+
+            <div class="subgrid">
+              <div class="box">
+                <div class="box-title">Подсказки</div>
+                <ul>
+                  ${block.tips.map((tip) => `<li>${escapeHtml(tip)}</li>`).join("")}
+                </ul>
+              </div>
+
+              <div class="box">
+                <div class="box-title">Аналоги</div>
+                <ul>
+                  ${alternativesHtml}
+                </ul>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      resultBox.innerHTML = `
+        <p class="empty">Нажми «Сгенерировать тренировку», и я соберу случайный вариант для дня <strong>${escapeHtml(day.title)}</strong>.</p>
+      `;
     }
 
-    saveState();
-    setActiveDay(state.activeDay);
-    Object.keys(state.days).forEach(renderDay);
+    function pickRandom(array) {
+      return array[Math.floor(Math.random() * array.length)];
+    }
+
+    function generateWorkout(dayKey) {
+      const day = workoutData[dayKey];
+      if (!day) return;
+
+      const selected = day.blocks.map((block) => {
+        const pool = [block, ...block.alternatives];
+        const choice = pickRandom(pool);
+        return {
+          base: block.name,
+          name: choice.name,
+          sets: block.sets,
+          description: choice.description,
+          tips: choice.tips,
+          isAlternative: choice.name !== block.name
+        };
+      });
+
+      resultBox.innerHTML = selected.map((item, index) => `
+        <article class="result-card">
+          <span class="tag">${item.isAlternative ? "Аналог" : "Основное упражнение"}</span>
+          <h3>${index + 1}. ${escapeHtml(item.name)}</h3>
+          <p><strong>Подходы / повторы:</strong> ${escapeHtml(item.sets)}</p>
+          <p>${escapeHtml(item.description)}</p>
+          <div class="box" style="margin-top: 10px;">
+            <div class="box-title">Подсказки</div>
+            <ul>
+              ${item.tips.map((tip) => `<li>${escapeHtml(tip)}</li>`).join("")}
+            </ul>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    dayButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        renderDay(btn.dataset.day);
+      });
+    });
+
+    generateBtn.addEventListener("click", () => {
+      generateWorkout(state.activeDay);
+    });
+
+    renderDay(state.activeDay);
   </script>
 </body>
 </html>
