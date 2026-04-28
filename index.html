@@ -6,98 +6,98 @@
   <title>Тренировки</title>
   <style>
     :root {
-      --bg: #0f172a;
-      --panel: rgba(15, 23, 42, 0.82);
-      --panel-2: rgba(30, 41, 59, 0.85);
-      --text: #e2e8f0;
-      --muted: #94a3b8;
-      --accent: #22c55e;
-      --accent-2: #38bdf8;
-      --border: rgba(148, 163, 184, 0.22);
-      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
-      --radius: 20px;
+      --bg0: #07111f;
+      --bg1: #0d1b2a;
+      --panel: rgba(14, 23, 38, 0.82);
+      --panel-strong: rgba(17, 30, 48, 0.95);
+      --line: rgba(148, 163, 184, 0.18);
+      --text: #e5eef8;
+      --muted: #9fb2c7;
+      --accent: #60a5fa;
+      --accent2: #22c55e;
+      --danger: #ef4444;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+      --radius: 22px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at top, rgba(56, 189, 248, 0.18), transparent 35%),
-        radial-gradient(circle at bottom, rgba(34, 197, 94, 0.16), transparent 30%),
-        linear-gradient(180deg, #020617 0%, #0f172a 100%);
       min-height: 100vh;
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(96, 165, 250, 0.18), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(34, 197, 94, 0.16), transparent 30%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
     }
 
     .wrap {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 24px;
+      padding: 20px;
     }
 
     .hero {
-      background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.92));
-      border: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(17, 30, 48, 0.98), rgba(8, 14, 24, 0.92));
+      border: 1px solid var(--line);
       box-shadow: var(--shadow);
-      border-radius: 28px;
-      padding: 28px;
-      margin-bottom: 20px;
+      border-radius: 30px;
+      padding: 24px;
+      margin-bottom: 18px;
     }
 
     h1 {
       margin: 0 0 10px;
-      font-size: clamp(28px, 4vw, 48px);
-      letter-spacing: -0.03em;
+      font-size: clamp(30px, 4vw, 52px);
+      letter-spacing: -0.04em;
     }
 
     .subtitle {
       margin: 0;
+      max-width: 800px;
+      line-height: 1.55;
       color: var(--muted);
-      line-height: 1.5;
-      max-width: 700px;
     }
 
-    .tabs {
+    .days {
       display: flex;
-      gap: 12px;
       flex-wrap: wrap;
-      margin: 24px 0 0;
+      gap: 10px;
+      margin-top: 20px;
     }
 
-    .tab-btn {
+    .day-btn {
       appearance: none;
-      border: 1px solid var(--border);
-      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid var(--line);
       color: var(--text);
-      padding: 14px 18px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 13px 16px;
       border-radius: 999px;
       cursor: pointer;
       font-weight: 700;
-      transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
     }
 
-    .tab-btn:hover {
+    .day-btn:hover {
       transform: translateY(-1px);
-      border-color: rgba(56, 189, 248, 0.55);
+      border-color: rgba(96, 165, 250, 0.45);
     }
 
-    .tab-btn.active {
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.95), rgba(56, 189, 248, 0.9));
-      color: #001018;
+    .day-btn.active {
+      background: linear-gradient(135deg, rgba(96, 165, 250, 0.95), rgba(34, 197, 94, 0.95));
+      color: #04111d;
       border-color: transparent;
     }
 
     .panel {
       display: none;
       background: var(--panel);
-      border: 1px solid var(--border);
+      border: 1px solid var(--line);
       box-shadow: var(--shadow);
       border-radius: 28px;
-      padding: 22px;
+      padding: 18px;
       margin-bottom: 18px;
       backdrop-filter: blur(10px);
     }
@@ -108,11 +108,11 @@
 
     .panel-head {
       display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 16px;
       flex-wrap: wrap;
-      margin-bottom: 18px;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 14px;
     }
 
     .panel h2 {
@@ -123,69 +123,172 @@
     .panel p {
       margin: 6px 0 0;
       color: var(--muted);
+      line-height: 1.45;
     }
 
-    .table {
-      width: 100%;
-      border-collapse: collapse;
-      overflow: hidden;
-      border-radius: 18px;
-      border: 1px solid var(--border);
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
-    .table th,
-    .table td {
-      padding: 14px 12px;
-      border-bottom: 1px solid var(--border);
-      text-align: left;
-      vertical-align: top;
+    .btn {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      padding: 12px 15px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
     }
 
-    .table th {
-      background: rgba(51, 65, 85, 0.72);
-      color: #f8fafc;
-      font-size: 14px;
+    .btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(96, 165, 250, 0.45);
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, rgba(96, 165, 250, 0.95), rgba(34, 197, 94, 0.95));
+      color: #04111d;
+      border-color: transparent;
+    }
+
+    .btn.danger {
+      border-color: rgba(239, 68, 68, 0.35);
+      color: #fecaca;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 0.75fr 0.28fr;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .grid-head {
+      color: #bfd0e0;
+      font-size: 13px;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
+      margin: 0 0 8px;
+      padding: 0 4px;
     }
 
-    .table tr:last-child td {
-      border-bottom: none;
+    .row {
+      margin-bottom: 10px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.03);
+    }
+
+    input, textarea {
+      width: 100%;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      background: rgba(3, 10, 18, 0.55);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 12px 12px;
+      font: inherit;
+      outline: none;
+    }
+
+    input:focus, textarea:focus {
+      border-color: rgba(96, 165, 250, 0.55);
+      box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.12);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 48px;
     }
 
     .hint {
-      margin-top: 14px;
+      margin-top: 12px;
       color: var(--muted);
       font-size: 14px;
     }
 
+    .result {
+      margin-top: 16px;
+      border-radius: 24px;
+      border: 1px solid rgba(96, 165, 250, 0.16);
+      background: linear-gradient(180deg, rgba(10, 18, 29, 0.9), rgba(7, 13, 22, 0.95));
+      padding: 18px;
+    }
+
+    .result h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .result ol {
+      margin: 0;
+      padding-left: 22px;
+      line-height: 1.6;
+    }
+
+    .result li + li {
+      margin-top: 10px;
+    }
+
+    .result .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 12px;
+    }
+
+    .empty {
+      color: var(--muted);
+      font-style: italic;
+      padding: 8px 2px 0;
+    }
+
+    .small {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .topline {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 10px;
+    }
+
     .pill {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       padding: 8px 12px;
       border-radius: 999px;
-      background: rgba(56, 189, 248, 0.14);
-      color: #bae6fd;
-      border: 1px solid rgba(56, 189, 248, 0.22);
+      background: rgba(96, 165, 250, 0.12);
+      border: 1px solid rgba(96, 165, 250, 0.18);
+      color: #cce6ff;
       font-size: 14px;
       font-weight: 700;
     }
 
+    @media (max-width: 860px) {
+      .grid-head { display: none; }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .row {
+        display: grid;
+        gap: 10px;
+      }
+    }
+
     @media (max-width: 700px) {
-      .wrap {
-        padding: 14px;
-      }
-
-      .hero,
-      .panel {
-        padding: 18px;
-        border-radius: 22px;
-      }
-
-      .table th,
-      .table td {
-        padding: 12px 10px;
-        font-size: 14px;
-      }
+      .wrap { padding: 12px; }
+      .hero, .panel { padding: 16px; border-radius: 22px; }
+      .actions { width: 100%; }
+      .btn { flex: 1 1 auto; }
     }
   </style>
 </head>
@@ -194,14 +297,19 @@
     <section class="hero">
       <h1>Тренировки</h1>
       <p class="subtitle">
-        Выбирай день кнопкой ниже. Сейчас это стартовая версия: она показывает нужный день,
-        а потом сюда легко добавим упражнения, аналоги и рандомизацию.
+        Выбирай день, вписывай упражнения и аналоги, а кнопка ниже будет собирать случайную тренировку.
+        Все данные сохраняются прямо в браузере.
       </p>
 
-      <div class="tabs" id="dayTabs">
-        <button class="tab-btn active" data-day="back-triceps">Спина + трицепс</button>
-        <button class="tab-btn" data-day="legs">Ноги</button>
-        <button class="tab-btn" data-day="chest-arms">Грудь + руки</button>
+      <div class="days" id="dayButtons">
+        <button class="day-btn active" data-day="back-triceps">Спина + трицепс</button>
+        <button class="day-btn" data-day="legs">Ноги</button>
+        <button class="day-btn" data-day="chest-arms">Грудь + руки</button>
+      </div>
+
+      <div class="topline">
+        <span class="pill" id="activeDayLabel">Активный день: Спина + трицепс</span>
+        <span class="small">Подсказка: в "Аналоги" можно писать через запятую.</span>
       </div>
     </section>
 
@@ -209,123 +317,368 @@
       <div class="panel-head">
         <div>
           <h2>Спина + трицепс</h2>
-          <p>Сюда потом внесем упражнения и их аналоги в формате таблицы.</p>
+          <p>Заполни список упражнений. Потом генератор выберет случайную версию из аналога и соберет тренировку.</p>
         </div>
-        <span class="pill">Активный день</span>
+        <div class="actions">
+          <button class="btn" data-add-row="back-triceps">Добавить упражнение</button>
+          <button class="btn primary" data-generate="back-triceps">Сгенерировать тренировку</button>
+        </div>
       </div>
 
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Упражнение</th>
-            <th>Аналоги</th>
-            <th>Подходы / повторы</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Тяга верхнего блока</td>
-            <td>Подтягивания, тяга резинки</td>
-            <td>3 x 10-12</td>
-          </tr>
-          <tr>
-            <td>Тяга штанги в наклоне</td>
-            <td>Тяга гантели, тяга Т-грифа</td>
-            <td>4 x 8-10</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="grid-head">
+        <div class="grid" style="grid-template-columns: 1.4fr 1fr 0.75fr 0.28fr;">
+          <div>Упражнение</div>
+          <div>Аналоги</div>
+          <div>Подходы / повторы</div>
+          <div></div>
+        </div>
+      </div>
 
-      <div class="hint">Это пример заполнения. Потом я помогу сделать редактируемую таблицу и рандомный выбор.</div>
+      <div id="rows-back-triceps"></div>
+      <div class="result" id="result-back-triceps" hidden></div>
+      <div class="hint">Пример: <b>Тяга верхнего блока</b> / аналоги: <b>подтягивания, тяга резинки</b> / 3x10-12.</div>
     </section>
 
     <section class="panel" id="panel-legs">
       <div class="panel-head">
         <div>
           <h2>Ноги</h2>
-          <p>Отдельный день, который можно заполнять своими упражнениями.</p>
+          <p>Отдельный день для ног. Можно настроить любой набор упражнений и замен.</p>
         </div>
-        <span class="pill">Активный день</span>
+        <div class="actions">
+          <button class="btn" data-add-row="legs">Добавить упражнение</button>
+          <button class="btn primary" data-generate="legs">Сгенерировать тренировку</button>
+        </div>
       </div>
 
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Упражнение</th>
-            <th>Аналоги</th>
-            <th>Подходы / повторы</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Присед со штангой</td>
-            <td>Гакк-присед, жим ногами</td>
-            <td>4 x 6-10</td>
-          </tr>
-          <tr>
-            <td>Сгибание ног лежа</td>
-            <td>Сгибание ног сидя</td>
-            <td>3 x 10-12</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="grid-head">
+        <div class="grid" style="grid-template-columns: 1.4fr 1fr 0.75fr 0.28fr;">
+          <div>Упражнение</div>
+          <div>Аналоги</div>
+          <div>Подходы / повторы</div>
+          <div></div>
+        </div>
+      </div>
 
-      <div class="hint">Потом можно сделать отдельный список замен под каждое упражнение.</div>
+      <div id="rows-legs"></div>
+      <div class="result" id="result-legs" hidden></div>
+      <div class="hint">Пример: <b>Присед</b> / аналоги: <b>жим ногами, гакк-присед</b> / 4x6-10.</div>
     </section>
 
     <section class="panel" id="panel-chest-arms">
       <div class="panel-head">
         <div>
           <h2>Грудь + руки</h2>
-          <p>Здесь будут жимы, разводки, бицепс и другие замены.</p>
+          <p>Сюда можно добавить жимы, разводки, бицепс и все твои замены.</p>
         </div>
-        <span class="pill">Активный день</span>
+        <div class="actions">
+          <button class="btn" data-add-row="chest-arms">Добавить упражнение</button>
+          <button class="btn primary" data-generate="chest-arms">Сгенерировать тренировку</button>
+        </div>
       </div>
 
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Упражнение</th>
-            <th>Аналоги</th>
-            <th>Подходы / повторы</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Жим штанги лежа</td>
-            <td>Жим гантелей, жим в тренажере</td>
-            <td>4 x 6-10</td>
-          </tr>
-          <tr>
-            <td>Сгибания на бицепс</td>
-            <td>Молотки, скамья Скотта</td>
-            <td>3 x 10-12</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="grid-head">
+        <div class="grid" style="grid-template-columns: 1.4fr 1fr 0.75fr 0.28fr;">
+          <div>Упражнение</div>
+          <div>Аналоги</div>
+          <div>Подходы / повторы</div>
+          <div></div>
+        </div>
+      </div>
 
-      <div class="hint">Данные здесь пока примерные — их можно заменить на твой реальный список.</div>
+      <div id="rows-chest-arms"></div>
+      <div class="result" id="result-chest-arms" hidden></div>
+      <div class="hint">Пример: <b>Жим штанги лежа</b> / аналоги: <b>жим гантелей, жим в тренажере</b> / 4x6-10.</div>
     </section>
   </div>
 
   <script>
-    const tabs = document.querySelectorAll(".tab-btn");
+    const STORAGE_KEY = "workout-randomizer-v1";
+
+    const dayNames = {
+      "back-triceps": "Спина + трицепс",
+      "legs": "Ноги",
+      "chest-arms": "Грудь + руки",
+    };
+
+    const defaults = {
+      activeDay: "back-triceps",
+      days: {
+        "back-triceps": [
+          { exercise: "Тяга верхнего блока", alternatives: "Подтягивания, тяга резинки", sets: "3 x 10-12" },
+          { exercise: "Тяга штанги в наклоне", alternatives: "Тяга гантели, тяга Т-грифа", sets: "4 x 8-10" },
+          { exercise: "Французский жим", alternatives: "Разгибание на блоке, отжимания на брусьях", sets: "3 x 10-12" }
+        ],
+        "legs": [
+          { exercise: "Присед со штангой", alternatives: "Жим ногами, гакк-присед", sets: "4 x 6-10" },
+          { exercise: "Сгибание ног лежа", alternatives: "Сгибание ног сидя", sets: "3 x 10-12" },
+          { exercise: "Выпады", alternatives: "Болгарские выпады, шаги на платформу", sets: "3 x 10-12" }
+        ],
+        "chest-arms": [
+          { exercise: "Жим штанги лежа", alternatives: "Жим гантелей, жим в тренажере", sets: "4 x 6-10" },
+          { exercise: "Разводка гантелей", alternatives: "Сведения в кроссовере, pec deck", sets: "3 x 10-12" },
+          { exercise: "Сгибание на бицепс", alternatives: "Молотки, скамья Скотта", sets: "3 x 10-12" }
+        ]
+      }
+    };
+
+    const state = loadState();
+
+    const dayButtons = document.getElementById("dayButtons");
+    const activeDayLabel = document.getElementById("activeDayLabel");
+
     const panels = {
       "back-triceps": document.getElementById("panel-back-triceps"),
       "legs": document.getElementById("panel-legs"),
       "chest-arms": document.getElementById("panel-chest-arms"),
     };
 
+    const rowsContainers = {
+      "back-triceps": document.getElementById("rows-back-triceps"),
+      "legs": document.getElementById("rows-legs"),
+      "chest-arms": document.getElementById("rows-chest-arms"),
+    };
+
+    const results = {
+      "back-triceps": document.getElementById("result-back-triceps"),
+      "legs": document.getElementById("result-legs"),
+      "chest-arms": document.getElementById("result-chest-arms"),
+    };
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return structuredClone(defaults);
+
+        const parsed = JSON.parse(raw);
+        const merged = structuredClone(defaults);
+
+        if (parsed.activeDay && dayNames[parsed.activeDay]) {
+          merged.activeDay = parsed.activeDay;
+        }
+
+        if (parsed.days && typeof parsed.days === "object") {
+          for (const key of Object.keys(merged.days)) {
+            if (Array.isArray(parsed.days[key])) {
+              merged.days[key] = parsed.days[key].map(normalizeRow).filter(Boolean);
+            }
+          }
+        }
+
+        return merged;
+      } catch {
+        return structuredClone(defaults);
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function normalizeRow(row) {
+      if (!row || typeof row !== "object") return null;
+      return {
+        exercise: String(row.exercise ?? "").trim(),
+        alternatives: String(row.alternatives ?? "").trim(),
+        sets: String(row.sets ?? "").trim(),
+      };
+    }
+
     function setActiveDay(day) {
-      tabs.forEach(btn => btn.classList.toggle("active", btn.dataset.day === day));
+      if (!dayNames[day]) return;
+      state.activeDay = day;
+      saveState();
+
+      [...dayButtons.querySelectorAll(".day-btn")].forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.day === day);
+      });
+
       Object.entries(panels).forEach(([key, panel]) => {
         panel.classList.toggle("active", key === day);
       });
+
+      activeDayLabel.textContent = "Активный день: " + dayNames[day];
+      results[day].hidden = true;
+      renderDay(day);
     }
 
-    tabs.forEach(btn => {
-      btn.addEventListener("click", () => setActiveDay(btn.dataset.day));
+    function createRow(day, index, row = {}) {
+      const wrap = document.createElement("div");
+      wrap.className = "row";
+      wrap.dataset.day = day;
+      wrap.dataset.index = index;
+
+      wrap.innerHTML = `
+        <div class="grid" style="grid-template-columns: 1.4fr 1fr 0.75fr 0.28fr;">
+          <input type="text" data-field="exercise" placeholder="Название упражнения" value="${escapeHtml(row.exercise || "")}">
+          <textarea data-field="alternatives" placeholder="Аналоги через запятую">${escapeHtml(row.alternatives || "")}</textarea>
+          <input type="text" data-field="sets" placeholder="Например: 4 x 8-10" value="${escapeHtml(row.sets || "")}">
+          <button class="btn danger" data-remove-row>×</button>
+        </div>
+      `;
+
+      wrap.querySelectorAll("input, textarea").forEach(el => {
+        el.addEventListener("input", () => {
+          const currentIndex = Number(wrap.dataset.index);
+          const currentDay = wrap.dataset.day;
+          const rowData = getRowData(wrap);
+          state.days[currentDay][currentIndex] = rowData;
+          saveState();
+        });
+      });
+
+      wrap.querySelector("[data-remove-row]").addEventListener("click", () => {
+        const currentDay = wrap.dataset.day;
+        const currentIndex = Number(wrap.dataset.index);
+        state.days[currentDay].splice(currentIndex, 1);
+        saveState();
+        renderDay(currentDay);
+      });
+
+      return wrap;
+    }
+
+    function getRowData(rowEl) {
+      const exercise = rowEl.querySelector('[data-field="exercise"]').value.trim();
+      const alternatives = rowEl.querySelector('[data-field="alternatives"]').value.trim();
+      const sets = rowEl.querySelector('[data-field="sets"]').value.trim();
+      return { exercise, alternatives, sets };
+    }
+
+    function renderDay(day) {
+      const container = rowsContainers[day];
+      container.innerHTML = "";
+
+      const rows = state.days[day];
+      if (!rows.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = "Пока нет упражнений. Нажми «Добавить упражнение».";
+        container.appendChild(empty);
+        return;
+      }
+
+      rows.forEach((row, index) => {
+        container.appendChild(createRow(day, index, row));
+      });
+    }
+
+    function addRow(day) {
+      state.days[day].push({ exercise: "", alternatives: "", sets: "" });
+      saveState();
+      renderDay(day);
+    }
+
+    function randomChoice(list, usedSet) {
+      const unique = [...new Set(list.map(x => x.trim()).filter(Boolean))];
+      if (!unique.length) return "";
+      for (let i = 0; i < 10; i++) {
+        const candidate = unique[Math.floor(Math.random() * unique.length)];
+        if (!usedSet.has(candidate) || unique.length === 1) {
+          usedSet.add(candidate);
+          return candidate;
+        }
+      }
+      const fallback = unique[Math.floor(Math.random() * unique.length)];
+      usedSet.add(fallback);
+      return fallback;
+    }
+
+    function parseAlternatives(text) {
+      return String(text || "")
+        .split(",")
+        .map(s => s.trim())
+        .filter(Boolean);
+    }
+
+    function shuffle(array) {
+      const copy = [...array];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function generateWorkout(day) {
+      const rows = state.days[day]
+        .map(normalizeRow)
+        .filter(row => row && (row.exercise || row.alternatives || row.sets));
+
+      if (!rows.length) {
+        showResult(day, "<p class='empty'>Сначала добавь хотя бы одно упражнение.</p>");
+        return;
+      }
+
+      const used = new Set();
+      const selected = rows.map(row => {
+        const pool = [row.exercise, ...parseAlternatives(row.alternatives)];
+        const chosen = randomChoice(pool, used);
+        return {
+          name: chosen || row.exercise || "Упражнение",
+          sets: row.sets || "—"
+        };
+      });
+
+      const ordered = shuffle(selected);
+
+      const html = `
+        <h3>Тренировка: ${dayNames[day]}</h3>
+        <ol>
+          ${ordered.map(item => `<li><b>${escapeHtml(item.name)}</b><br><span class="small">${escapeHtml(item.sets)}</span></li>`).join("")}
+        </ol>
+        <div class="meta">Сгенерировано случайно из твоих упражнений и аналогов.</div>
+      `;
+
+      showResult(day, html);
+    }
+
+    function showResult(day, html) {
+      const box = results[day];
+      box.innerHTML = html;
+      box.hidden = false;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    dayButtons.addEventListener("click", (event) => {
+      const btn = event.target.closest(".day-btn");
+      if (!btn) return;
+      setActiveDay(btn.dataset.day);
     });
+
+    document.addEventListener("click", (event) => {
+      const addBtn = event.target.closest("[data-add-row]");
+      if (addBtn) {
+        addRow(addBtn.dataset.addRow);
+        return;
+      }
+
+      const generateBtn = event.target.closest("[data-generate]");
+      if (generateBtn) {
+        generateWorkout(generateBtn.dataset.generate);
+      }
+    });
+
+    for (const day of Object.keys(state.days)) {
+      if (!Array.isArray(state.days[day])) {
+        state.days[day] = [];
+      }
+      if (!state.days[day].length) {
+        state.days[day] = structuredClone(defaults.days[day]);
+      }
+    }
+
+    saveState();
+    setActiveDay(state.activeDay);
+    Object.keys(state.days).forEach(renderDay);
   </script>
 </body>
 </html>
