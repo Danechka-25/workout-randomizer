@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Тренировки</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: rgba(15, 23, 42, 0.82);
+      --panel-2: rgba(30, 41, 59, 0.85);
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #22c55e;
+      --accent-2: #38bdf8;
+      --border: rgba(148, 163, 184, 0.22);
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, rgba(56, 189, 248, 0.18), transparent 35%),
+        radial-gradient(circle at bottom, rgba(34, 197, 94, 0.16), transparent 30%),
+        linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      min-height: 100vh;
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.92));
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      border-radius: 28px;
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 48px);
+      letter-spacing: -0.03em;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+      max-width: 700px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 24px 0 0;
+    }
+
+    .tab-btn {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.75);
+      color: var(--text);
+      padding: 14px 18px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(56, 189, 248, 0.55);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.95), rgba(56, 189, 248, 0.9));
+      color: #001018;
+      border-color: transparent;
+    }
+
+    .panel {
+      display: none;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      border-radius: 28px;
+      padding: 22px;
+      margin-bottom: 18px;
+      backdrop-filter: blur(10px);
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .panel h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .panel p {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+    }
+
+    .table th,
+    .table td {
+      padding: 14px 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .table th {
+      background: rgba(51, 65, 85, 0.72);
+      color: #f8fafc;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .hint {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.14);
+      color: #bae6fd;
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 700px) {
+      .wrap {
+        padding: 14px;
+      }
+
+      .hero,
+      .panel {
+        padding: 18px;
+        border-radius: 22px;
+      }
+
+      .table th,
+      .table td {
+        padding: 12px 10px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>Тренировки</h1>
+      <p class="subtitle">
+        Выбирай день кнопкой ниже. Сейчас это стартовая версия: она показывает нужный день,
+        а потом сюда легко добавим упражнения, аналоги и рандомизацию.
+      </p>
+
+      <div class="tabs" id="dayTabs">
+        <button class="tab-btn active" data-day="back-triceps">Спина + трицепс</button>
+        <button class="tab-btn" data-day="legs">Ноги</button>
+        <button class="tab-btn" data-day="chest-arms">Грудь + руки</button>
+      </div>
+    </section>
+
+    <section class="panel active" id="panel-back-triceps">
+      <div class="panel-head">
+        <div>
+          <h2>Спина + трицепс</h2>
+          <p>Сюда потом внесем упражнения и их аналоги в формате таблицы.</p>
+        </div>
+        <span class="pill">Активный день</span>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Упражнение</th>
+            <th>Аналоги</th>
+            <th>Подходы / повторы</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Тяга верхнего блока</td>
+            <td>Подтягивания, тяга резинки</td>
+            <td>3 x 10-12</td>
+          </tr>
+          <tr>
+            <td>Тяга штанги в наклоне</td>
+            <td>Тяга гантели, тяга Т-грифа</td>
+            <td>4 x 8-10</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="hint">Это пример заполнения. Потом я помогу сделать редактируемую таблицу и рандомный выбор.</div>
+    </section>
+
+    <section class="panel" id="panel-legs">
+      <div class="panel-head">
+        <div>
+          <h2>Ноги</h2>
+          <p>Отдельный день, который можно заполнять своими упражнениями.</p>
+        </div>
+        <span class="pill">Активный день</span>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Упражнение</th>
+            <th>Аналоги</th>
+            <th>Подходы / повторы</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Присед со штангой</td>
+            <td>Гакк-присед, жим ногами</td>
+            <td>4 x 6-10</td>
+          </tr>
+          <tr>
+            <td>Сгибание ног лежа</td>
+            <td>Сгибание ног сидя</td>
+            <td>3 x 10-12</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="hint">Потом можно сделать отдельный список замен под каждое упражнение.</div>
+    </section>
+
+    <section class="panel" id="panel-chest-arms">
+      <div class="panel-head">
+        <div>
+          <h2>Грудь + руки</h2>
+          <p>Здесь будут жимы, разводки, бицепс и другие замены.</p>
+        </div>
+        <span class="pill">Активный день</span>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Упражнение</th>
+            <th>Аналоги</th>
+            <th>Подходы / повторы</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Жим штанги лежа</td>
+            <td>Жим гантелей, жим в тренажере</td>
+            <td>4 x 6-10</td>
+          </tr>
+          <tr>
+            <td>Сгибания на бицепс</td>
+            <td>Молотки, скамья Скотта</td>
+            <td>3 x 10-12</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="hint">Данные здесь пока примерные — их можно заменить на твой реальный список.</div>
+    </section>
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll(".tab-btn");
+    const panels = {
+      "back-triceps": document.getElementById("panel-back-triceps"),
+      "legs": document.getElementById("panel-legs"),
+      "chest-arms": document.getElementById("panel-chest-arms"),
+    };
+
+    function setActiveDay(day) {
+      tabs.forEach(btn => btn.classList.toggle("active", btn.dataset.day === day));
+      Object.entries(panels).forEach(([key, panel]) => {
+        panel.classList.toggle("active", key === day);
+      });
+    }
+
+    tabs.forEach(btn => {
+      btn.addEventListener("click", () => setActiveDay(btn.dataset.day));
+    });
+  </script>
+</body>
+</html>
